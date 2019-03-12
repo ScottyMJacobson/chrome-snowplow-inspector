@@ -1,13 +1,14 @@
 import m = require('mithril');
 import analytics = require('./analytics');
+import { IToolbar } from './types';
 import validator = require('./validator');
 
 export = {
-    view: (vnode) => m('nav.navbar.is-flex-touch',
+    view: (vnode: m.Vnode<IToolbar>) => m('nav.navbar.is-flex-touch',
         [
             m('div.navbar-brand',
                 m('a.navbar-item', { href: analytics.landingUrl, target: '_blank' },
-                    m('img', { alt: 'Snowflake Analytics logo', src: 'sa-logo.png' }),
+                    m('img', { alt: 'Poplin Data logo', src: 'pd-logo.png' }),
                 ),
             ),
             m('div.navbar-menu.is-active.is-shadowless',

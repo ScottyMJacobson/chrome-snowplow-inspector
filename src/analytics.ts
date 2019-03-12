@@ -5,14 +5,24 @@ const sp = Snowplow.getTrackerUrl('d.snowflake-analytics.com');
 sp.setAppId('snowplow-chrome-extension');
 sp.setPlatform('app');
 
-const seenCollectors = {};
+const seenCollectors: {[collector: string]: string[]} = {};
 
-const trackerAnalytics = (collector, pageUrl, appId) => {
-    if (pageUrl === null) {
+const trackerAnalytics = (collector: string, pageUrl: string, appId: string) => {
+    if (!pageUrl) {
         return;
     }
     collector = collector.toLowerCase();
-    pageUrl = (new URL(pageUrl)).host.toLowerCase();
+    try {
+        pageUrl = (new URL(pageUrl)).host.toLowerCase();
+    } catch (e) {
+        console.log(`Could not parse URL: ${pageUrl}`);
+        return;
+    }
+
+    if (pageUrl === 'badbucket.example.org') {
+        return;
+    }
+
     appId = (appId || '').toLowerCase();
 
     const appKey = pageUrl + ':' + appId;
@@ -32,7 +42,7 @@ const trackerAnalytics = (collector, pageUrl, appId) => {
     }
 };
 
-const repoAnalytics = (repo) => {
+const repoAnalytics = (repo: string) => {
     if (repo !== 'http://iglucentral.com') {
         chrome.storage.sync.get({ enableTracking: true }, (settings) => {
             if (settings.enableTracking) {
@@ -42,7 +52,7 @@ const repoAnalytics = (repo) => {
     }
 };
 
-const landingUrl = 'https://www.snowflake-analytics.com/?' + [
+const landingUrl = 'https://poplindata.com/?' + [
     'utm_source=debugger%20extension',
     'utm_medium=software',
     'utm_campaign=Chrome%20extension%20debugger%20window%20top-left',

@@ -1,4 +1,4 @@
-const hash = (bytes): string => {
+const hash = (bytes: string): string => {
     let h = 5381;
 
     for (let i = 0; i < bytes.length; i++) {
@@ -8,7 +8,7 @@ const hash = (bytes): string => {
     return String(h);
 };
 
-const hasMembers = (obj) => {
+const hasMembers = (obj: object) => {
     if (typeof obj !== 'object' || obj === null) {
         return false;
     }
@@ -27,10 +27,15 @@ const hasMembers = (obj) => {
 };
 
 const b64d = (s: string): string => {
-    return atob(s.replace(/-/g, '+').replace(/_/g, '/'));
+    try {
+        return atob(s.replace(/-/g, '+').replace(/_/g, '/'));
+    } catch (e) {
+        console.log(e);
+        return '';
+    }
 };
 
-const nameType = (val): string => {
+const nameType = (val: any): string => {
     if (val === null) {
         return 'null';
     }
